@@ -35,7 +35,6 @@ public class PokerHub : Hub<IPokerClient>
             Average = AverageEstimateFromPlayers()
         };
 
-
         await NotifyReveal(revealNotification);
         _gameState = GameState.Revealed;
         await NotifyGameStateChange();

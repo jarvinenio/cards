@@ -61,13 +61,11 @@ public class PokerHubTests
         hub.Clients = _clientsCallerMock.Object;
         _clientsCallerMock.Setup(p => p.All)
             .Returns(_clientsAllMock.Object);
-        var revealNotification = new RevealNotification();
-
         // Act
         await hub.Reveal();
 
         // Assert
-        _clientsCallerMock.Verify(p => p.All.RevealReceived(revealNotification));
+        _clientsCallerMock.Verify(p => p.All.RevealReceived(It.IsAny<RevealNotification>()));
     }
 
     [Test]
@@ -83,6 +81,6 @@ public class PokerHubTests
         await hub.Reveal();
 
         // Assert
-        _clientsCallerMock.Verify(p => p.All.GameStateChanged(GameState.Ongoing));
+        _clientsCallerMock.Verify(p => p.All.GameStateChanged(GameState.Revealed));
     }
 }

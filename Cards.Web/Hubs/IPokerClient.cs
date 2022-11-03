@@ -8,6 +8,5 @@ public interface IPokerClient
     Task PlayersChanged(List<Player> players);
     Task GameStateChanged(GameState gameState);
     Task GameJoined(GameState gameState, Player player);
-
     Task BoardReset();
 }
