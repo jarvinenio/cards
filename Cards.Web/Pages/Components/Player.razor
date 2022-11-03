@@ -1,0 +1,25 @@
+﻿@using Cards.Web.Models
+<div class="card @estimated">
+    <div class="card-header">@PlayerModel.Name</div>
+    @if (GameState == GameState.Revealed && PlayerModel.EstimateGiven)
+    {
+        <div class="card-content">@PlayerModel.Estimate</div>
+    }
+    else
+    {
+        <div class="card-content">-</div>
+    }
+</div>
+
+
+@code {
+
+    [Parameter]
+    public Models.Player PlayerModel { get; set; } = new();
+
+    [Parameter]
+    public GameState GameState { get; set; } = GameState.NotStarted;
+
+    private string estimated => PlayerModel.EstimateGiven ? "estimated" : "";
+
+}

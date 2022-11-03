@@ -1,0 +1,20 @@
+﻿@using Cards.Web.Models
+<div>
+    <h3>Player estimates</h3>
+    <div class="card-container">
+        @foreach (var player in Players)
+        {
+            <Player PlayerModel="@player" GameState="GameState"></Player>
+        }
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public List<Models.Player> Players { get; set; } = new();
+
+    [Parameter]
+    public GameState GameState { get; set; } = GameState.NotStarted;
+
+}

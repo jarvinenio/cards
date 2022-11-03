@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cards.Web", "Cards.Web\Cards.Web.csproj", "{E9CE807C-8360-4068-BBB1-08B9F603234C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cards.Web.Tests", "Cards.Web.Tests\Cards.Web.Tests.csproj", "{6F079831-2CE8-461D-9B07-B16275BEC4EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E9CE807C-8360-4068-BBB1-08B9F603234C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9CE807C-8360-4068-BBB1-08B9F603234C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9CE807C-8360-4068-BBB1-08B9F603234C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9CE807C-8360-4068-BBB1-08B9F603234C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F079831-2CE8-461D-9B07-B16275BEC4EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F079831-2CE8-461D-9B07-B16275BEC4EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F079831-2CE8-461D-9B07-B16275BEC4EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F079831-2CE8-461D-9B07-B16275BEC4EE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

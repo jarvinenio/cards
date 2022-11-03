@@ -1,0 +1,141 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client
+@using Cards.Web.Models
+@inject NavigationManager NavigationManager
+
+
+@if (!Joined)
+{
+    <JoinButton OnJoin="@Join"></JoinButton>
+}
+else
+{
+    <PlayerList Players="@_players" GameState="_gameState"></PlayerList>
+    @switch (_gameState)
+    {
+        case GameState.Revealed:
+        {
+            <div>Average: @_average</div>
+            <button @onclick="@StartNew" class="btn btn-primary">Start new round</button>
+            break;
+        }
+        case GameState.Ongoing:
+        {
+            <div>
+                <button @onclick="@Reveal" class="btn btn-primary">Reveal</button>
+            </div>
+            <PokerHand SendEstimate="@SendEstimate"></PokerHand>
+            break;
+        }
+        case GameState.NotStarted:
+        default:
+        {
+            <button @onclick="@StartNew" class="btn btn-primary">Start new round</button>
+            break;
+        }
+    }
+}
+<div class="reset">
+    <button @onclick="ResetBoard" class="btn btn-secondary btn-reset" style="">Reset board</button>
+</div>
+
+@code {
+    private HubConnection? _hubConnection;
+
+    private double _average;
+    private List<Models.Player> _players = new();
+    private GameState _gameState = GameState.NotStarted;
+    private bool Joined { get; set; } = false;
+    private Guid _id = Guid.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/playhub"))
+            .Build();
+
+        AttachHubEvents();
+        await _hubConnection.StartAsync();
+    }
+
+    private void AttachHubEvents()
+    {
+        if (_hubConnection == null) return;
+
+        _hubConnection.On<RevealNotification>("RevealReceived", revealNotification =>
+        {
+            _average = revealNotification.Average;
+            InvokeAsync(StateHasChanged);
+        });
+
+        _hubConnection.On<List<Models.Player>>("PlayersChanged", players =>
+        {
+            _players = players;
+            InvokeAsync(StateHasChanged);
+        });
+
+        _hubConnection.On<GameState>("GameStateChanged", gameState =>
+        {
+            _gameState = gameState;
+            InvokeAsync(StateHasChanged);
+        });
+
+        _hubConnection.On("BoardReset", () =>
+        {
+            _gameState = GameState.NotStarted;
+            Joined = false;
+            _id = Guid.Empty;
+            InvokeAsync(StateHasChanged);
+        });
+
+        _hubConnection.On<GameState, Models.Player>("GameJoined", async (gameState, player) =>
+        {
+            Joined = true;
+            _gameState = gameState;
+            _id = player.Id;
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+
+
+    private async Task SendEstimate(int estimate)
+    {
+        if (_hubConnection is not null)
+        {
+            var id = _id;
+            await _hubConnection.SendAsync("Estimate", estimate, id);
+        }
+    }
+
+    private async Task Reveal()
+    {
+        if (_hubConnection is not null)
+        {
+            await _hubConnection.SendAsync("Reveal");
+        }
+    }
+
+    private async Task StartNew()
+    {
+        if (_hubConnection is not null)
+        {
+            await _hubConnection.SendAsync("StartNew");
+        }
+    }
+
+    private async Task Join(string name)
+    {
+        if (_hubConnection is not null)
+        {
+            await _hubConnection.SendAsync("Join", name);
+        }
+    }
+
+    private async Task ResetBoard()
+    {
+        if (_hubConnection is not null)
+        {
+            await _hubConnection.SendAsync("ResetBoard");
+        }
+    }
+
+}

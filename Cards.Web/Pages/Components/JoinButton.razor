@@ -1,0 +1,13 @@
+﻿<div class="form-group">
+    <label for="name">Join as:</label>
+    <input id="name" type="text" @bind="_playerName"/>
+    <button @onclick="@(() => OnJoin.InvokeAsync(_playerName))" class="btn btn-primary">Join</button>
+</div>
+
+@code {
+
+    [Parameter]
+    public EventCallback<string> OnJoin { get; set; }
+
+    private string _playerName = "Player";
+}

@@ -1,0 +1,13 @@
+﻿<div class="form-group">
+    <label for="estimate">Estimate</label>
+    <input id="estimate" type="number" @bind="_cardValue"/>
+    <button @onclick="@(() => SendEstimate.InvokeAsync(_cardValue))" class="btn btn-primary">Submit</button>
+</div>
+
+@code {
+
+    [Parameter]
+    public EventCallback<int> SendEstimate { get; set; }
+
+    private int _cardValue = 5;
+}
